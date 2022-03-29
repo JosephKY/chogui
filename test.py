@@ -1,7 +1,22 @@
 import tkintergui as gui
+gui.blocklinux()
+gui.resizable(False,True)
+gui.title("Testing!")
+gui.windowsizemethod(2)
+gui.windowsize(50,50)
+gui.fullscreen(False)
+gui.borderless(False)
 
 element = gui.Box()
+element.size(0,50,0,50)
+element.pos(0,25,0,25)
+element.color("00ff00")
+element.fontfamily("ArialBold")
+element.fontsize(25)
+element.fontcolor("0000ff")
+element.content("Hello World!")
+element.hidden(False)
+element.onclick(False)
 element.render()
-element.size(10,10,10,10)
 
 gui.finish()
