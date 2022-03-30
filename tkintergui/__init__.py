@@ -35,6 +35,8 @@ from turtle import color
 import platform
 win = tkinter.Tk()
 canvas = tkinter.Canvas(win,width=userconfig["SCREENSIZE"][0],height=userconfig["SCREENSIZE"][1])
+canvas.pack(fill="both",expand=True)
+
 screenDimensions = [win.winfo_screenwidth(),win.winfo_screenheight()]
 canvasDimensions = []
 def applyConfig():
@@ -289,10 +291,7 @@ class Box:
     def getsize(self):
         return self.__size
 
-class MainCanvas(canvas):
-    def __init__():
-        #canvas.__init__(self,parent,**kwargs)
-        pass
+
             
 def finish():
     """
@@ -310,12 +309,12 @@ def __click__(data):
             obj.onclick(True)
 
 def __adjust__(data):
-    if configd == True:
-        global canvasDimensions
-        canvasDimensions = [win.winfo_width(),win.winfo_height()]
-        canvas.configure(width=win.winfo_width() - 6,height=win.winfo_height() - 6,bg=("#" + userconfig["BGCOLOR"]))
-        for _,obj in enumerate(elements):
-            obj.render()
+    #if configd == True:
+    global canvasDimensions
+    canvasDimensions = [win.winfo_width(),win.winfo_height()]
+    #    canvas.configure(width=win.winfo_width() - 6,height=win.winfo_height() - 6,bg=("#" + userconfig["BGCOLOR"]))
+    for _,obj in enumerate(elements):
+        obj.render()
 
 
 win.bind("<Button-1>",__click__)

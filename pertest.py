@@ -4,8 +4,8 @@ gui.resizable(True,True)
 e = gui.Box()
 
 def re(element):
-    print("click")
-    gui.windowsize(400,400)
+    gui.windowsize(50,50)
+    gui.windowsizemethod(2)
     gui.applyConfig()
 
 e.size(0,25,0,10)
