@@ -30,7 +30,7 @@ def valCol(color):
 
 configd = False
 
-from tkinter import CENTER, messagebox as msg
+from tkinter import ANCHOR, CENTER, messagebox as msg
 from turtle import color 
 import platform
 win = tkinter.Tk()
@@ -161,24 +161,33 @@ class Box:
         width = self.__size[0][0] + (self.__size[0][1] / 100) * canvasDimensions[0]
         height = self.__size[1][0] + (self.__size[1][1] / 100) * canvasDimensions[1]
         self.cursize = [width,height]
+        print(width)
+        print(win.winfo_width())
         canvas.coords(self.__box,0,0,width,height)
         canvas.move(self.__box,posx,posy) 
-        canvas.moveto(self.__label,posx + (width / 2),posy + (height/2) - self.__fontsize / 2) #WHY U USE TWO DIFFERENT METHODS??? ?????? ???????? 
-        canvas.itemconfigure(self.__box,fill=("#" + self.__color),state=(hideref[self.__hidden]))
-        canvas.itemconfigure(self.__label,text=self.__content, fill=("#" + self.__fontcolor),state=(hideref[self.__hidden]))
-        try:
-            canvas.itemconfigure(self.__label,font=(self.__fontfamily,self.__fontsize))
-        except: # tkinter HATES invalid font names... AND SPACES IN SAID NAMES.
-            canvas.itemconfigure(self.__label,font=("Georgia",self.__fontsize))
+        self.__label.place(x=posx,y=posy,width=width,height=height)
+        self.__label.configure(bg="#" + self.__color,fg="#" + self.__fontcolor,borderwidth=0,text=self.__content)
+        #canvas.moveto(self.__label,posx + (width / 3),posy + (height/2) - self.__fontsize / 2) #WHY U USE TWO DIFFERENT METHODS??? ?????? ???????? 
+        #canvas.moveto(0,posy + (height/2) - self.__fontsize / 2) #WHY U USE TWO DIFFERENT METHODS??? ?????? ???????? 
+        
+        canvas.itemconfigure(self.__box,fill=("#" + self.__color),state=(hideref[self.__hidden]),outline=("#" + self.__bordercolor),width=self.__borderwidth)
+        #canvas.itemconfigure(self.__label,text=self.__content, fill=("#" + self.__fontcolor),state=(hideref[self.__hidden]))
+        #try:
+        #    canvas.itemconfigure(self.__label,font=(self.__fontfamily,self.__fontsize))
+        #except: # tkinter HATES invalid font names... AND SPACES IN SAID NAMES.
+        #    canvas.itemconfigure(self.__label,font=("Georgia",self.__fontsize))
         canvas.pack()
 
     def __init__(self) -> None:
         self.test = "Hello World!"
-        self.__box = canvas.create_rectangle(0,0,0,0)
+        self.__box = canvas.create_rectangle(0,0,0,0,outline="#000000")
         self.__fontsize = 16
         self.__fontfamily = "Segoe"
         self.__fontcolor = "000000"
-        self.__label = canvas.create_text(200,200,justify="center",fill=("#" + self.__fontcolor),font=(self.__fontfamily,self.__fontsize), )
+        self.__bordercolor = "000000"
+        self.__borderwidth = 3
+        self.__label = tkinter.Label(win,justify="center",text="")
+        #self.__label = canvas.create_text(0,200,justify="right",fill=("#" + self.__fontcolor),font=(self.__fontfamily,self.__fontsize), )
         self.__pos = [[0,0],[0,0]] # X: pixel,perc Y: pixel,perc
         self.__size = [[0,0],[0,0]]
         self.curpos = [0,0]

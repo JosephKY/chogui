@@ -4,13 +4,15 @@ gui.resizable(True,True)
 e = gui.Box()
 
 def re(element):
-    gui.windowsize(50,50)
-    gui.windowsizemethod(2)
-    gui.applyConfig()
+    gui.windowsize(1000,90)
+    gui.windowsizemethod(1)
 
 e.size(0,25,0,10)
+e.__borderwidth = 0
 e.pos(0,10,0,10)
 e.onclick(re)
+e.content("Hello World!")
+e.fontsize(10)
 e.render()
 
 b = gui.Box()
