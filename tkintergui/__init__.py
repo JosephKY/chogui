@@ -1,6 +1,7 @@
 from ctypes import alignment
 import tkinter
 from typing import Callable 
+elements = []
 userconfig = {
     "SCREENSIZE":[600,480],
     "SCREENMETHOD":[1,"Pixels","Percent"],
@@ -27,6 +28,8 @@ def valCol(color):
       return 1
       break
 
+configd = False
+
 from tkinter import CENTER, messagebox as msg
 from turtle import color 
 import platform
@@ -35,6 +38,7 @@ canvas = tkinter.Canvas(win,width=userconfig["SCREENSIZE"][0],height=userconfig[
 screenDimensions = [win.winfo_screenwidth(),win.winfo_screenheight()]
 canvasDimensions = []
 def applyConfig():
+    global configd
     global canvasDimensions
     scmethod = userconfig["SCREENMETHOD"][userconfig["SCREENMETHOD"][0]]
     canvasDimensions = []
@@ -65,7 +69,7 @@ def applyConfig():
     
     canvas.config(width=canvasDimensions[0],height=canvasDimensions[1],bg=("#" + userconfig["BGCOLOR"]))
 
-    print(canvasDimensions)
+    configd = True
 
 applyConfig()
 
@@ -151,8 +155,10 @@ class Box:
         """
         posx = self.__pos[0][0] + (self.__pos[0][1] / 100) * canvasDimensions[0]
         posy = self.__pos[1][0] + (self.__pos[1][1] / 100) * canvasDimensions[1]
+        self.curpos = [posx,posy]
         width = self.__size[0][0] + (self.__size[0][1] / 100) * canvasDimensions[0]
         height = self.__size[1][0] + (self.__size[1][1] / 100) * canvasDimensions[1]
+        self.cursize = [width,height]
         canvas.coords(self.__box,0,0,width,height)
         canvas.move(self.__box,posx,posy) 
         canvas.moveto(self.__label,posx + (width / 2),posy + (height/2) - self.__fontsize / 2) #WHY U USE TWO DIFFERENT METHODS??? ?????? ???????? 
@@ -165,6 +171,7 @@ class Box:
         canvas.pack()
 
     def __init__(self) -> None:
+        self.test = "Hello World!"
         self.__box = canvas.create_rectangle(0,0,0,0)
         self.__fontsize = 16
         self.__fontfamily = "Segoe"
@@ -172,10 +179,13 @@ class Box:
         self.__label = canvas.create_text(200,200,justify="center",fill=("#" + self.__fontcolor),font=(self.__fontfamily,self.__fontsize), )
         self.__pos = [[0,0],[0,0]] # X: pixel,perc Y: pixel,perc
         self.__size = [[0,0],[0,0]]
+        self.curpos = [0,0]
+        self.cursize = [0,0]
         self.__color = "FF0000"
         self.__content = ""
         self.__hidden = False
         self.__onclickfunc = placeholder
+        elements.append(self)
 
     def size(self,x: int, xpercent: int,y: int,ypercent: int):
         """
@@ -266,16 +276,49 @@ class Box:
         if(fun == False):
             self.__onclickfunc = placeholder
             return
+        if(fun == True):
+            self.__onclickfunc(self)
+            return
         if (not callable(fun)):
             raise TypeError("Argument must be a function for onclick or False to disable")
         self.__onclickfunc = fun
+
+    def getpos(self):
+        return self.__pos
+
+    def getsize(self):
+        return self.__size
+
+class MainCanvas(canvas):
+    def __init__():
+        #canvas.__init__(self,parent,**kwargs)
+        pass
             
 def finish():
+    """
+    Always call this function at the very end of your application to prevent it from closing
+    """
     win.mainloop()
 
-def click(data):
-    print(data.x,data.y)
+def __click__(data):
+    for _,obj in enumerate(elements):
+        posx = int(obj.curpos[0])
+        posy = int(obj.curpos[1])
+        width = int(obj.cursize[0])
+        height = int(obj.cursize[1])
+        if int(data.x) in range(posx,posx + width) and int(data.y) in range(posy,posy + height):
+            obj.onclick(True)
 
-win.bind("<Button-1>",click)
+def __adjust__(data):
+    if configd == True:
+        global canvasDimensions
+        canvasDimensions = [win.winfo_width(),win.winfo_height()]
+        canvas.configure(width=win.winfo_width() - 6,height=win.winfo_height() - 6,bg=("#" + userconfig["BGCOLOR"]))
+        for _,obj in enumerate(elements):
+            obj.render()
+
+
+win.bind("<Button-1>",__click__)
+win.bind("<Configure>",__adjust__)
 
 canvas.pack()
