@@ -58,7 +58,7 @@ def applyConfig():
         win.quit()
         win.destroy()
 
-    win.title = userconfig["TITLE"]
+    win.winfo_toplevel().title(userconfig["TITLE"])
 
     if(userconfig["FULLSCREEN"] == True):
         win.attributes("-fullscreen",True)
