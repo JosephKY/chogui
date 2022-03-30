@@ -381,6 +381,221 @@ class Label:
     def getsize(self):
         return self.__size
 
+class Image:
+    def render(self):
+        """
+        Confirm visual adaptations and render the element onto the screen
+        """
+        posx = self.__pos[0][0] + (self.__pos[0][1] / 100) * canvasDimensions[0]
+        posy = self.__pos[1][0] + (self.__pos[1][1] / 100) * canvasDimensions[1]
+        width = self.__size[0][0] + (self.__size[0][1] / 100) * canvasDimensions[0]
+        height = self.__size[1][0] + (self.__size[1][1] / 100) * canvasDimensions[1]
+        self.curpos = [posx,posy]
+        self.cursize = [width,height]
+        self.__borderframe.place(width=width,height=height,x=posx,y=posy)
+        self.__borderframe.configure(bg="#" + self.__bordercolor)
+        self.__widget.place(width=width - self.__borderwidth * 2,height=height - self.__borderwidth * 2,x=self.__borderwidth,y=self.__borderwidth)
+        self.__widget.configure(
+            background="#" + self.__color,
+        )
+
+        if(self.__hidden == True):
+            self.__borderframe.place(x=-9999,y=-9999)
+            # listen, i know what youre thinking, but trust me, you would have done it too...
+        
+        canvas.pack()
+
+    def __init__(self, file) -> None:
+        self.test = "Hello World!"
+        self.__size = [[0,0],[0,0]]
+        self.__pos = [[0,0],[0,0]]
+        self.curpos = [0,0]
+        self.cursize = [0,0]
+        self.__color = "FFFFFF"
+        self.__hidden = False
+        self.__onclickfunc = placeholder
+        self.__onhoverinfunc = placeholder 
+        self.__onhoveroutfunc = placeholder
+        self.__bordercolor = "000000"
+        self.__borderwidth = 1
+        self.__borderframe = tkinter.Frame(win,bg="#" + self.__bordercolor)
+        self.__widget = tkinter.PhotoImage(master=self.__borderframe,file=file,width=0,height=0)
+        self.__borderframe.place(x=0,y=0)
+        self.data = None
+
+        self.__widget.bind("<Button-1>",self.__perf__)
+        self.__widget.bind("<Enter>",self.__perfhvin__)
+        self.__widget.bind("<Leave>",self.__perfhvout__)
+
+        elements.append(self)
+
+    def __perf__(self, ddata):
+        data = [ddata.x,ddata.y,self]
+        self.__onclickfunc(data)
+
+    def __perfhvin__(self, ddata):
+        data = [ddata.x,ddata.y,self]
+        self.__onhoverinfunc(data)
+
+    def __perfhvout__(self, ddata):
+        data = [ddata.x,ddata.y,self]
+        self.__onhoveroutfunc(data)
+        
+
+    def size(self,x: int, xpercent: int,y: int,ypercent: int):
+        """
+        Change the size of the element by the following arguments:\n
+        X size in pixels\n
+        X size in percentage of the window size (0 to 100)\n
+        Y size in pixels\n
+        Y size in percentage of the window size (0 to 100)
+        """
+        if not all(isinstance(i, int) for i in [x, xpercent, y, ypercent]) or not all(i > -1 for i in [x, xpercent, y, ypercent]):
+            raise TypeError("All arguments must be a positive integer for size")
+        self.__size = [[x,xpercent],[y,ypercent]]
+
+    def pos(self,x: int, xpercent: int,y: int,ypercent: int):
+        """
+        Change the position of the element by the following arguments:\n
+        X position in pixels\n
+        X position in percentage of the window size (0 to 100)\n
+        Y position in pixels\n
+        Y position in percentage of the window size (0 to 100)
+        """
+        if not all(isinstance(i, int) for i in [x, xpercent, y, ypercent]) or not all(i > -1 for i in [x, xpercent, y, ypercent]):
+            raise TypeError("All arguments must be a positive integer for pos")
+        self.__pos = [[x,xpercent],[y,ypercent]]
+
+    def content(self,content: str):
+        """
+        Change the text content the element will render at its center
+        """
+        if not(isinstance(content, str)):
+            raise TypeError("Argument must be a string for content")
+        self.__content = content
+
+    def color(self,color: str):
+        """
+        Change the color of the element by a hexadecimal color code
+        """
+        if(not(isinstance(color,str))):
+            raise TypeError("Argument must be a string for color")
+        if(valCol(color.lower()) != 1):
+            self.__color = color
+        else:
+            raise Exception("Invalid color argument '" + color + "', color must be a hexadecimal color code")
+
+    def bordercolor(self,color: str):
+        """
+        Change the color of the element's surrounding border by a hexadecimal color code
+        """
+        if(not(isinstance(color,str))):
+            raise TypeError("Argument must be a string for bordercolor")
+        if(valCol(color.lower()) != 1):
+            self.__bordercolor = color
+        else:
+            raise Exception("Invalid color argument '" + color + "', color must be a hexadecimal color code")
+
+    def bordersize(self,size: int):
+        """
+        Change the thickness of the element's surrounding border in pixels
+        """
+        if not(isinstance(size, int)):
+            raise TypeError("Argument must be an integer for bordersize")
+        if not size > 0:
+            raise Exception("bordersize needs to be greater than zero")
+        self.__borderwidth = size
+
+    def fontsize(self,size: int):
+        """
+        Change the font size of the element's text content
+        """
+        if not(isinstance(size, int)):
+            raise TypeError("Argument must be an integer for fontsize")
+        if not size > 0:
+            raise Exception("fontsize needs to be greater than zero")
+        self.__fontsize = size
+
+    def fontfamily(self,family: str):
+        """
+        Change the font family the element's text content will render in
+        """
+        if not(isinstance(family, str)):
+            raise TypeError("Argument must be a string for fontfamily")
+        if len(family.split(" ")) != 1:
+            raise Exception("Do not include spaces in the font family name, merge words together instead")
+        self.__fontfamily = family
+
+    def fontcolor(self,color: str):
+        """
+        Change the color of the element's rendered text content
+        """
+        if(not(isinstance(color,str))):
+            raise TypeError("Argument must be a string for fontcolor")
+        if(valCol(color.lower()) != 1):
+            self.__fontcolor = color
+        else:
+            raise Exception("Invalid fontcolor argument '" + color + "', color must be a hexadecimal color code")
+
+    def hidden(self,boolean: bool):
+        """
+        Toggle whether or not the element and it's text is hidden. Hiding also disables the onclick function
+        """
+        if not isinstance(boolean,bool):
+            raise TypeError("Argument must be a boolean (True/False) for hidden")
+        self.__hidden = boolean
+
+    def onclick(self,fun):
+        """
+        Append a function to the element which it will perform whenever it was clicked. Always include exactly 1 argument in your function, as the module will always return data about the click event. Enter a False boolean to disable
+        """
+        if(fun == False):
+            self.__onclickfunc = placeholder
+            return
+        if(fun == True):
+            self.__onclickfunc(self)
+            return
+        if (not callable(fun)):
+            raise TypeError("Argument must be a function for onclick or False to disable")
+        else:
+            self.__onclickfunc = fun
+
+    def onhoverin(self,fun):
+        """
+        Append a function to the element which it will perform whenever the mouse cursor hovers into it. Always include exactly 1 argument in your function, as the module will always return data about the click event. Enter a False boolean to disable
+        """
+        if(fun == False):
+            self.__onhoverinfunc = placeholder
+            return
+        if(fun == True):
+            self.__onhoverinfunc(self)
+            return
+        if (not callable(fun)):
+            raise TypeError("Argument must be a function for onclick or False to disable")
+        else:
+            self.__onhoverinfunc = fun
+
+    def onhoverout(self,fun):
+        """
+        Append a function to the element which it will perform whenever the mouse cursor hovers out of it after hovering into it (onhoverin function is not required). Always include exactly 1 argument in your function, as the module will always return data about the click event. Enter a False boolean to disable
+        """
+        if(fun == False):
+            self.__onhoveroutfunc = placeholder
+            return
+        if(fun == True):
+            self.__onhoveroutfunc(self)
+            return
+        if (not callable(fun)):
+            raise TypeError("Argument must be a function for onclick or False to disable")
+        else:
+            self.__onhoveroutfunc = fun
+
+    def getpos(self):
+        return self.__pos
+
+    def getsize(self):
+        return self.__size
+
 
             
 def finish():

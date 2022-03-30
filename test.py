@@ -22,6 +22,10 @@ label.onclick(testClickFunc)
 label.onhoverin(testHoveringIn)
 label.onhoverout(testHoveringOut)
 label.hidden(False)
+
+image = gui.Image("testimage.gif")
+
+
 gui.renderall()
 
 gui.finish()
