@@ -9,7 +9,7 @@ To get started, save the 'tkintergui' folder anywhere on your computer and impor
 project
 │   test.py  
 │
-└───tkintergui
+└───chogui
     | ...
 ```
 
