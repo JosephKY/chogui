@@ -170,6 +170,10 @@ class Label:
             text=self.__content,
             fg="#" + self.__fontcolor
         )
+
+        if(self.__hidden == True):
+            self.__borderframe.place(x=-9999,y=-9999)
+            # listen, i know what youre thinking, but trust me, you would have done it too...
         
         canvas.pack()
 
@@ -225,10 +229,10 @@ class Label:
 
     def size(self,x: int, xpercent: int,y: int,ypercent: int):
         """
-        Change the size of the element by the following arguments:
-        X size in pixels
-        X size in percentage of the window size (0 to 100)
-        Y size in pixels
+        Change the size of the element by the following arguments:\n
+        X size in pixels\n
+        X size in percentage of the window size (0 to 100)\n
+        Y size in pixels\n
         Y size in percentage of the window size (0 to 100)
         """
         if not all(isinstance(i, int) for i in [x, xpercent, y, ypercent]) or not all(i > -1 for i in [x, xpercent, y, ypercent]):
@@ -237,10 +241,10 @@ class Label:
 
     def pos(self,x: int, xpercent: int,y: int,ypercent: int):
         """
-        Change the position of the element by the following arguments:
-        X position in pixels
-        X position in percentage of the window size (0 to 100)
-        Y position in pixels
+        Change the position of the element by the following arguments:\n
+        X position in pixels\n
+        X position in percentage of the window size (0 to 100)\n
+        Y position in pixels\n
         Y position in percentage of the window size (0 to 100)
         """
         if not all(isinstance(i, int) for i in [x, xpercent, y, ypercent]) or not all(i > -1 for i in [x, xpercent, y, ypercent]):
@@ -392,6 +396,9 @@ def __adjust__(data):
     #    canvas.configure(width=win.winfo_width() - 6,height=win.winfo_height() - 6,bg=("#" + userconfig["BGCOLOR"]))
     for _,obj in enumerate(elements):
         obj.render()
+
+def renderall():
+    canvas.pack()
 
 win.bind("<Configure>",__adjust__)
 

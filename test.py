@@ -21,6 +21,7 @@ label.content("Hello World!")
 label.onclick(testClickFunc)
 label.onhoverin(testHoveringIn)
 label.onhoverout(testHoveringOut)
-label.render()
+label.hidden(False)
+gui.renderall()
 
 gui.finish()
