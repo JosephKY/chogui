@@ -166,16 +166,16 @@ class Box:
         canvas.coords(self.__box,0,0,width,height)
         canvas.move(self.__box,posx,posy) 
         self.__label.place(x=posx,y=posy,width=width,height=height)
-        self.__label.configure(bg="#" + self.__color,fg="#" + self.__fontcolor,borderwidth=0,text=self.__content)
+        self.__label.configure(bg="#" + self.__color,fg="#" + self.__fontcolor,borderwidth=0,text=self.__content,highlightcolor="#" + self.__color,border=0)
         #canvas.moveto(self.__label,posx + (width / 3),posy + (height/2) - self.__fontsize / 2) #WHY U USE TWO DIFFERENT METHODS??? ?????? ???????? 
         #canvas.moveto(0,posy + (height/2) - self.__fontsize / 2) #WHY U USE TWO DIFFERENT METHODS??? ?????? ???????? 
         
         canvas.itemconfigure(self.__box,fill=("#" + self.__color),state=(hideref[self.__hidden]),outline=("#" + self.__bordercolor),width=self.__borderwidth)
         #canvas.itemconfigure(self.__label,text=self.__content, fill=("#" + self.__fontcolor),state=(hideref[self.__hidden]))
-        #try:
-        #    canvas.itemconfigure(self.__label,font=(self.__fontfamily,self.__fontsize))
-        #except: # tkinter HATES invalid font names... AND SPACES IN SAID NAMES.
-        #    canvas.itemconfigure(self.__label,font=("Georgia",self.__fontsize))
+        try:
+            self.__label.configure(font=(self.__fontfamily, self.__fontsize))
+        except: # tkinter HATES invalid font names... AND SPACES IN SAID NAMES.
+            self.__label.configure(font=("Georgia",self.__fontsize))
         canvas.pack()
 
     def __init__(self) -> None:
@@ -185,7 +185,7 @@ class Box:
         self.__fontfamily = "Segoe"
         self.__fontcolor = "000000"
         self.__bordercolor = "000000"
-        self.__borderwidth = 3
+        self.__borderwidth = 0
         self.__label = tkinter.Label(win,justify="center",text="")
         #self.__label = canvas.create_text(0,200,justify="right",fill=("#" + self.__fontcolor),font=(self.__fontfamily,self.__fontsize), )
         self.__pos = [[0,0],[0,0]] # X: pixel,perc Y: pixel,perc
@@ -196,6 +196,7 @@ class Box:
         self.__content = ""
         self.__hidden = False
         self.__onclickfunc = placeholder
+        self.data = None
         elements.append(self)
 
     def size(self,x: int, xpercent: int,y: int,ypercent: int):
