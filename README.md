@@ -245,8 +245,100 @@ Append a function to the label when the mouse cursor hovers away from it, after 
 ```py
 def test(data):
     print(data, "Goodbye, mouse cursor")
+```
 
-label.onhoverout(test)
+### 'Image'
+
+An image is a widget that contains an image file of your choice. This is done using PIP, which supports many image file types, including PNG, JPG, GIF, and BMP. Images can be positioned, resized, given onclick/hover procedures, and given borders.
+
+*Images with transprency are not supported.* Images with alpha colors and transparency may behave strangely and transparent areas will be filled with a white color.
+
+```py
+import chogui as cgui
+
+image = cgui.Image("image.png")
+```
+**Methods**
+
+**pos(*int*,*int*,*int*,*int*)**
+
+Set the position of the image on the canvas.
+The first argument is for the x location in pixels
+The second argument is for the x location in percentage
+The third argument is for the y location in pixels
+The fourth argument is for the y location in percentage
+
+```py
+image.pos(100,7,300,20) # 100 pixels and 7% across the screen, 300 pixels and 20% down the screen
+```
+
+**size(*int*,*int*,*int*,*int*)**
+
+Set the size of the image.
+The first argument is for the width in pixels
+The second argument is for the width in percentage
+The third argument is for the height in pixels
+The fourth argument is for the height in percentage
+
+```py
+image.pos(100,7,300,20) # 100 pixels and 7% in width, 300 pixels and 20% in height
+```
+
+**bordercolor(*(Hexadecimal Color Code)*)**
+
+Set the color of the image's border with a hexadecimal color code
+
+```py
+image.bordercolor('0000FF')
+```
+
+**bordersize(*int*)**
+
+Set the thickness of the image's border in pixels
+
+```py
+image.bordersize(3)
+```
+
+**hidden(*bool*)**
+
+Toggle whether or not the image is hidden. Hidden images cannot be interacted with in any way (hovering, clicking, etc), nor can they be seen at all
+
+```py
+image.hidden(False)
+```
+
+**onclick(*func*)**
+
+Append a function to the image which it will perform when it is clicked
+
+```py
+def test(data):
+    print(data, "Hello World!")
+
+image.onclick(test)
+```
+
+**onhoverin(*func*)**
+
+Append a function to the image when the mouse cursor hovers into it
+
+```py
+def test(data):
+    print(data, "Hello, mouse cursor")
+
+image.onhoverin(test)
+```
+
+**onhoverout(*func*)**
+
+Append a function to the image when the mouse cursor hovers away from it, after hovering in
+
+```py
+def test(data):
+    print(data, "Goodbye, mouse cursor")
+
+image.onhoverout(test)
 ```
 
 

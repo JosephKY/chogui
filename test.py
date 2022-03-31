@@ -1,5 +1,6 @@
 import chogui as gui
 gui.resizable(True, True)
+gui.bgcolor("000000")
 
 def testClickFunc(data):
     print("Hello world!")
@@ -23,7 +24,7 @@ label.onhoverin(testHoveringIn)
 label.onhoverout(testHoveringOut)
 label.hidden(False)
 
-image = gui.Image("testimage.png")
+image = gui.Image("alphatest.png")
 image.pos(0,50,0,50)
 image.size(0,50,0,50)
 image.bordercolor("ff0000")

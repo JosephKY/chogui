@@ -78,6 +78,13 @@ def applyConfig():
 
 applyConfig()
 
+def bgcolor(color: str):
+    if valCol(color) != 1:
+        userconfig["BGCOLOR"] = color
+    else:
+        raise Exception("Background color is invalid. Color must be a hexadecimal color code")
+    applyConfig()
+
 def windowsize(x: int,y: int):
     """
     Define the size of the window by x and y dimensions, or percentage (0 to 100), depending on the set window size method
