@@ -24,6 +24,31 @@ hideref = {
     False:"normal"
 }
 
+colorNames = {
+    "red": "e03a3a",
+    "orange":"e36622",
+    "yellow":"edcb1f",
+    "lime":"a5ed1f",
+    "green":"4ebd22",
+    "cyan":"44db92",
+    "lightblue":"37d8de",
+    "blue":"2f53d6",
+    "purple":"6636d6",
+    "violet":"7724d6",
+    "pink":"cc65db",
+    "hotpink":"ff00b7",
+    "brown":"402c21",
+    "black":"000000",
+    "darkgrey":"363636",
+    "darkgray":"363636",
+    "gray":"808080",
+    "grey":"808080",
+    "lightgray":"c9c9c9",
+    "lightgrey":"c9c9c9",
+    "white":"ffffff",
+    "ketchup":"db6b6b"
+}
+
 def valCol(color):
   for _,i in enumerate(color):
     our = ord(i)
@@ -297,8 +322,8 @@ class Label:
         """
         if not(isinstance(size, int)):
             raise TypeError("Argument must be an integer for bordersize")
-        if not size > 0:
-            raise Exception("bordersize needs to be greater than zero")
+        if not size > -1:
+            raise Exception("bordersize needs to be a positive number")
         self.__borderwidth = size
 
     def fontsize(self,size: int):
@@ -497,8 +522,8 @@ class Image:
         """
         if not(isinstance(size, int)):
             raise TypeError("Argument must be an integer for bordersize")
-        if not size > 0:
-            raise Exception("bordersize needs to be greater than zero")
+        if not size > -1:
+            raise Exception("bordersize needs to be a positive number")
         self.__borderwidth = size
 
     def hidden(self,boolean: bool):

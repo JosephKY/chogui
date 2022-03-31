@@ -1,6 +1,6 @@
 import chogui as gui
 gui.resizable(True, True)
-gui.bgcolor("000000")
+gui.bgcolor("EEEEEE")
 
 def testClickFunc(data):
     print("Hello world!")
@@ -29,6 +29,7 @@ image.pos(0,50,0,50)
 image.size(0,50,0,50)
 image.bordercolor("ff0000")
 image.bordersize(3)
+image.hidden(True)
 image.render()
 
 gui.renderall()
