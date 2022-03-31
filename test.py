@@ -23,8 +23,12 @@ label.onhoverin(testHoveringIn)
 label.onhoverout(testHoveringOut)
 label.hidden(False)
 
-image = gui.Image("testimage.gif")
-
+image = gui.Image("testimage.png")
+image.pos(0,50,0,50)
+image.size(0,50,0,50)
+image.bordercolor("ff0000")
+image.bordersize(3)
+image.render()
 
 gui.renderall()
 

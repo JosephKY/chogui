@@ -1,6 +1,9 @@
 from ctypes import alignment
+from email.mime import image
 import tkinter
 from typing import Callable 
+from PIL import ImageTk
+from PIL import Image as PImage
 elements = []
 userconfig = {
     "SCREENSIZE":[600,480],
@@ -394,10 +397,10 @@ class Image:
         self.cursize = [width,height]
         self.__borderframe.place(width=width,height=height,x=posx,y=posy)
         self.__borderframe.configure(bg="#" + self.__bordercolor)
-        self.__widget.place(width=width - self.__borderwidth * 2,height=height - self.__borderwidth * 2,x=self.__borderwidth,y=self.__borderwidth)
-        self.__widget.configure(
-            background="#" + self.__color,
-        )
+        self.__load = (PImage.open(self.__filename).convert('RGB')).resize((int(width - self.__borderwidth * 2),int(height - self.__borderwidth * 2)),PImage.BICUBIC)
+        self.__render = ImageTk.PhotoImage(self.__load)
+        self.__widget.configure(image=self.__render)
+        self.__widget.image = self.__render
 
         if(self.__hidden == True):
             self.__borderframe.place(x=-9999,y=-9999)
@@ -407,11 +410,11 @@ class Image:
 
     def __init__(self, file) -> None:
         self.test = "Hello World!"
+        self.__filename = file
         self.__size = [[0,0],[0,0]]
         self.__pos = [[0,0],[0,0]]
         self.curpos = [0,0]
         self.cursize = [0,0]
-        self.__color = "FFFFFF"
         self.__hidden = False
         self.__onclickfunc = placeholder
         self.__onhoverinfunc = placeholder 
@@ -419,7 +422,11 @@ class Image:
         self.__bordercolor = "000000"
         self.__borderwidth = 1
         self.__borderframe = tkinter.Frame(win,bg="#" + self.__bordercolor)
-        self.__widget = tkinter.PhotoImage(master=self.__borderframe,file=file,width=0,height=0)
+        self.__load = PImage.open(file)
+        self.__render = ImageTk.PhotoImage(self.__load)
+        self.__widget = tkinter.Label(self.__borderframe,image=self.__render,borderwidth=0)
+        self.__widget.image = self.__render
+        self.__widget.pack(expand=True)
         self.__borderframe.place(x=0,y=0)
         self.data = None
 
@@ -466,25 +473,6 @@ class Image:
             raise TypeError("All arguments must be a positive integer for pos")
         self.__pos = [[x,xpercent],[y,ypercent]]
 
-    def content(self,content: str):
-        """
-        Change the text content the element will render at its center
-        """
-        if not(isinstance(content, str)):
-            raise TypeError("Argument must be a string for content")
-        self.__content = content
-
-    def color(self,color: str):
-        """
-        Change the color of the element by a hexadecimal color code
-        """
-        if(not(isinstance(color,str))):
-            raise TypeError("Argument must be a string for color")
-        if(valCol(color.lower()) != 1):
-            self.__color = color
-        else:
-            raise Exception("Invalid color argument '" + color + "', color must be a hexadecimal color code")
-
     def bordercolor(self,color: str):
         """
         Change the color of the element's surrounding border by a hexadecimal color code
@@ -505,37 +493,6 @@ class Image:
         if not size > 0:
             raise Exception("bordersize needs to be greater than zero")
         self.__borderwidth = size
-
-    def fontsize(self,size: int):
-        """
-        Change the font size of the element's text content
-        """
-        if not(isinstance(size, int)):
-            raise TypeError("Argument must be an integer for fontsize")
-        if not size > 0:
-            raise Exception("fontsize needs to be greater than zero")
-        self.__fontsize = size
-
-    def fontfamily(self,family: str):
-        """
-        Change the font family the element's text content will render in
-        """
-        if not(isinstance(family, str)):
-            raise TypeError("Argument must be a string for fontfamily")
-        if len(family.split(" ")) != 1:
-            raise Exception("Do not include spaces in the font family name, merge words together instead")
-        self.__fontfamily = family
-
-    def fontcolor(self,color: str):
-        """
-        Change the color of the element's rendered text content
-        """
-        if(not(isinstance(color,str))):
-            raise TypeError("Argument must be a string for fontcolor")
-        if(valCol(color.lower()) != 1):
-            self.__fontcolor = color
-        else:
-            raise Exception("Invalid fontcolor argument '" + color + "', color must be a hexadecimal color code")
 
     def hidden(self,boolean: bool):
         """
@@ -611,6 +568,9 @@ def __adjust__(data):
     #    canvas.configure(width=win.winfo_width() - 6,height=win.winfo_height() - 6,bg=("#" + userconfig["BGCOLOR"]))
     for _,obj in enumerate(elements):
         obj.render()
+
+def masterclick(data):
+    print(data)
 
 def renderall():
     canvas.pack()
